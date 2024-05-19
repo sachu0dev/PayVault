@@ -19,6 +19,12 @@ const verifySignin = z.object({
   password: z.string().min(6).max(20),
 })
 
+const verifyUpdateUser = z.object({
+  password: z.string().min(6).max(20).optional(),
+  firstname : z.string().max(50).optional(),
+  lastname: z.string().max(50).optional(),
+})
+
 router.post("/signup", async (req, res) => {
   const result = verifySignup.safeParse(req.body);
   if (result.success) {
@@ -81,6 +87,29 @@ router.post("/signin", async (req, res) => {
     } catch (error) {
       res.json({ error: "Invalid credentials" });
     }
+})
+
+router.put("/",authMiddleware, async (req, res)=>{
+  const result = verifyUpdateUser.safeParse(req.body);
+  try {
+    if(result.success){
+      const user =await  User.findOne({ username: req.user.userId });
+      if(user){
+        user.password = result.data.password;
+        user.firstname = result.data.firstname;
+        user.lastname = result.data.lastname;
+        user.save();
+        res.json({ message: "User updated successfully" });
+      }
+    } else{
+      res.status(411).json({
+        message: "Error while updating information"
+      });
+    }
+  } catch (error) {
+    res.status(401).json({ error: "Error while updating information" });
+  }
+  
 })
 
 module.exports = router;
