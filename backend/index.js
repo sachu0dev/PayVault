@@ -8,11 +8,6 @@ require('dotenv').config()
 app.use(express.json());
 app.use(cors());
 
-
-
-
-
-
 const rootRouter = require('./routes/index');
 
 app.use("/api/v1", rootRouter);

@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const z = require('zod');
 const jwt = require('jsonwebtoken');
-
+const authMiddleware = require('../routes/middleware');
 const User = require('../db');
 
 const verifySignup = z.object({
@@ -71,6 +71,9 @@ router.post("/signin", async (req, res) => {
         } else{
           res.status(401).json({ 	message: "Error while logging in" });
         }
+      }
+      else{
+        res.status(401).json({ 	message: "Error while logging in" });
       }
     } else{
       res.status(401).json({ 	message: "Error while logging in" });
