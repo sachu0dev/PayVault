@@ -3,7 +3,7 @@ const router = express.Router();
 const z = require('zod');
 const jwt = require('jsonwebtoken');
 const authMiddleware = require('../routes/middleware');
-const User = require('../db');
+const {User } = require('../db');
 
 const verifySignup = z.object({
   firstname: z.string().max(50),
