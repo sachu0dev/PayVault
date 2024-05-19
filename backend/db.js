@@ -1,6 +1,5 @@
 
 cosnt = mongoose = require('mongoose');
-//Set up default mongoose connection
 mongoose.connect('mongodb+srv://admin:sachu@cluster0.ur9rn4z.mongodb.net/PayVault')
   .then(() => {
     console.log('MongoDB Connected');
