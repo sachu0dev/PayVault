@@ -12,6 +12,7 @@ const authMiddleware = (req,res,next)=>{
         res.status(403).send("Unauthorized");
       }else{
         req.user = user;
+
         next();
       }
     })
