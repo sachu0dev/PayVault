@@ -109,7 +109,34 @@ router.put("/",authMiddleware, async (req, res)=>{
   } catch (error) {
     res.status(401).json({ error: "Error while updating information" });
   }
+})
+
+router.get("/bulk", async (req, res) => {
+  const filter = req.query.filter || "";
+  const users = await User.find({
+    $or: [{
+        firstname: {
+            "$regex": filter
+        }
+    }, {
+        lastname: {
+            "$regex": filter
+        }
+    }]
+})
+
+res.json({
+  users: users.map(user =>{
+    return {
+      username: user.username,
+      firstname: user.firstname,
+      lastname: user.lastname,
+      _id: user._id
+    }
+  })
+});
   
+
 })
 
 module.exports = router;
