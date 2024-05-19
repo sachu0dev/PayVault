@@ -3,7 +3,7 @@ const router = express.Router();
 const z = require('zod');
 const jwt = require('jsonwebtoken');
 const authMiddleware = require('../routes/middleware');
-const {User } = require('../db');
+const {User, Account } = require('../db');
 
 const verifySignup = z.object({
   firstname: z.string().max(50),
@@ -34,7 +34,11 @@ router.post("/signup", async (req, res) => {
         res.status(400).json({ error: "Email already taken / Username already taken" });
       } else {
         const newUser = new User(result.data);
+        const newAccount = new Account({userId: newUser._id});
+        newAccount.balance = Math.floor(Math.random() * 100000);
+        
         await newUser.save();
+        await newAccount.save();
         const token = jwt.sign({userId: newUser.username}, process.env.JWT_SECRET);
         res.json({
           message: "User created successfully",
