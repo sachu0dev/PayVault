@@ -6,7 +6,6 @@ const bodyParser = require('body-parser');
 require('dotenv').config()
 
 app.use(express.json());
-app.use(bodyParser());
 app.use(cors());
 
 
@@ -18,8 +17,7 @@ const rootRouter = require('./routes/index');
 
 app.use("/api/v1", rootRouter);
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
-  console.log(process.env.JWT_SECRET);
 });

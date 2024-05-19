@@ -1,15 +1,15 @@
 
 cosnt = mongoose = require('mongoose');
 //Set up default mongoose connection
-mongoose.connect('mongodb+srv://admin:sachu@cluster0.ur9rn4z.mongodb.net/PayVault', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-}).then(() => {
-  console.log('MongoDB Connected');
-}).catch(err => {
-  console.error('MongoDB Connection Error: ', err);
-  process.exit(1);
-});
+mongoose.connect('mongodb+srv://admin:sachu@cluster0.ur9rn4z.mongodb.net/PayVault')
+  .then(() => {
+    console.log('MongoDB Connected');
+  })
+  .catch(err => {
+    console.error('MongoDB Connection Error: ', err);
+    process.exit(1);
+  });
+
 
 
 
