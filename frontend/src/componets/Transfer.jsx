@@ -1,4 +1,11 @@
-const Transfer = ({ to }) => {
+import { useState } from "react";
+
+const Transfer = ({ id }) => {
+  const [amount, setAmount] = useState("");
+
+  const handelClick = () => {
+    console.log("clicked");
+  };
   return (
     <div className="w-screen h-screen flex items-center justify-center bg-slate-300">
       <div className="flex flex-col bg-white p-8  rounded-lg w-[30vw]">
@@ -20,13 +27,14 @@ const Transfer = ({ to }) => {
             type="text"
             id="to"
             placeholder="Enter amount"
-            value={to}
-            onChange={(e) => setTo(e.target.value)}
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
           />
 
           <button
             className="w-full px-4 py-2 bg-green-500 text-white rounded-md mt-4"
             type="submit"
+            onClick={() => handelClick(id, amount)}
           >
             Transfer
           </button>

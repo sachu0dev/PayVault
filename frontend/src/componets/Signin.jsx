@@ -1,7 +1,9 @@
+import axios from "axios";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Signin = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     username: "",
@@ -14,10 +16,29 @@ const Signin = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Form submitted:", formData);
-    // api calls goes here
+    var input = {};
+    if (isEmailMod) {
+      input = {
+        email: formData.email,
+        password: formData.password,
+      };
+    } else {
+      input = {
+        username: formData.username,
+        password: formData.password,
+      };
+    }
+    const res = await axios.post(
+      "http://localhost:3000/api/v1/user/signin",
+      input
+    );
+    const json = await res.data;
+    localStorage.setItem("token", json.token);
+    localStorage.setItem("username", formData.username || formData.email);
+    navigate("/dashboard");
   };
   return (
     <div className="h-screen w-screen flex items-center justify-center bg-black/60">

@@ -1,13 +1,15 @@
+import axios from "axios";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Signup = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     username: "",
     password: "",
-    firstName: "",
-    lastName: "",
+    firstname: "",
+    lastname: "",
   });
 
   const handleChange = (e) => {
@@ -15,9 +17,21 @@ const Signup = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Form submitted:", formData);
+    try {
+      const res = await axios.post(
+        "http://localhost:3000/api/v1/user/signup",
+        formData
+      );
+      const json = await res.data;
+      localStorage.setItem("token", json.token);
+      localStorage.setItem("username", formData.username);
+      navigate("/dashboard");
+    } catch (error) {
+      console.log(error);
+    }
     // api calls goes here
   };
   return (
@@ -69,8 +83,8 @@ const Signup = () => {
             First Name:
             <input
               type="text"
-              name="firstName"
-              value={formData.firstName}
+              name="firstname"
+              value={formData.firstname}
               onChange={handleChange}
               placeholder="John"
               className="w-full border-2  p-2 rounded-md"
@@ -81,8 +95,8 @@ const Signup = () => {
             Last Name:
             <input
               type="text"
-              name="lastName"
-              value={formData.lastName}
+              name="lastname"
+              value={formData.lastname}
               onChange={handleChange}
               placeholder="Doe"
               className="w-full border-2  p-2 rounded-md"

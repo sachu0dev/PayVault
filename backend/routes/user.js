@@ -27,6 +27,7 @@ const verifyUpdateUser = z.object({
 
 router.post("/signup", async (req, res) => {
   const result = verifySignup.safeParse(req.body);
+  
   if (result.success) {
     try {
       const user = await User.findOne({ email: result.data.email , username: result.data.username});
@@ -41,6 +42,7 @@ router.post("/signup", async (req, res) => {
         await newAccount.save();
         const token = jwt.sign({userId: newUser._id}, process.env.JWT_SECRET);
         res.json({
+          fistname: newUser.firstname,
           message: "User created successfully",
           token: token
         })
@@ -56,25 +58,29 @@ router.post("/signup", async (req, res) => {
 
 router.post("/signin", async (req, res) => {
     const result = verifySignin.safeParse(req.body);
+    console.log(req.body);
+    console.log(result.error);
     try {
       if(result.success) {
-        if(result.data.email) {
+        if(result.data.email ) {
           const user = await User.findOne({ email: result.data.email });
           if(user && user.password === result.data.password) {
 
             const token = jwt.sign({userId: user.username}, process.env.JWT_SECRET);
             res.json({
+              fistname: user.firstname,
               message: "User signed in successfully",
               token: token
             })
           } else{
             res.status(401).json({ 	message: "Error while logging in" });
           }
-      } else if(result.data.username){
+      } else if(result.data.username ) {
         const user = await User.findOne({ username: result.data.username });
         if(user && user.password === result.data.password) {
           const token = jwt.sign({userId: user.username}, process.env.JWT_SECRET);
           res.json({
+            fistname: user.firstname,
             message: "User signed in successfully",
             token: token
           })
