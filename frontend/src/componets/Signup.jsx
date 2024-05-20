@@ -1,8 +1,11 @@
 import axios from "axios";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../utils/auth";
 
 const Signup = () => {
+  const { updateToken } = useAuth();
+
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
@@ -27,12 +30,13 @@ const Signup = () => {
       );
       const json = await res.data;
       localStorage.setItem("token", json.token);
-      localStorage.setItem("username", formData.username);
+      localStorage.setItem("firstname", json.firstname);
+      const receivedToken = json.token;
+      updateToken(receivedToken);
       navigate("/dashboard");
     } catch (error) {
       console.log(error);
     }
-    // api calls goes here
   };
   return (
     <div className="h-screen w-screen flex items-center justify-center bg-black/60">

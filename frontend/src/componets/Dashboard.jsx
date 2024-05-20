@@ -1,7 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../utils/auth";
 
 const Dashboard = () => {
   const [search, setSearch] = useState("");
+  const { token } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!token) {
+      navigate("/signin");
+    }
+  }, [token, navigate]);
+
+  if (!token) {
+    return null; // Prevent rendering dashboard content if not authenticated
+  }
 
   return (
     <>

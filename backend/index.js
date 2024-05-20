@@ -2,7 +2,6 @@ const express = require("express");
 const app = express();
 const {User} = require('./db.js');
 const cors = require('cors');
-const bodyParser = require('body-parser');
 require('dotenv').config()
 
 app.use(express.json());

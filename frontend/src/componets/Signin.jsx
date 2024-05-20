@@ -1,9 +1,11 @@
 import axios from "axios";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../utils/auth";
 
 const Signin = () => {
   const navigate = useNavigate();
+  const { updateToken } = useAuth();
   const [formData, setFormData] = useState({
     email: "",
     username: "",
@@ -37,7 +39,10 @@ const Signin = () => {
     );
     const json = await res.data;
     localStorage.setItem("token", json.token);
-    localStorage.setItem("username", formData.username || formData.email);
+    localStorage.setItem("firstname", json.firstname);
+
+    const receivedToken = json.token;
+    updateToken(receivedToken);
     navigate("/dashboard");
   };
   return (

@@ -4,6 +4,10 @@ const z = require('zod');
 const jwt = require('jsonwebtoken');
 const authMiddleware = require('../routes/middleware');
 const {User, Account } = require('../db');
+const bcrypt = require('bcrypt');
+require('dotenv').config()
+
+
 
 const verifySignup = z.object({
   firstname: z.string().max(50),
@@ -35,6 +39,7 @@ router.post("/signup", async (req, res) => {
         res.status(400).json({ error: "Email already taken / Username already taken" });
       } else {
         const newUser = new User(result.data);
+        newUser.password = await bcrypt.hash(result.data.password, 10);
         const newAccount = new Account({userId: newUser._id});
         newAccount.balance = Math.floor(Math.random() * 100000);
         
@@ -57,47 +62,39 @@ router.post("/signup", async (req, res) => {
 
 
 router.post("/signin", async (req, res) => {
-    const result = verifySignin.safeParse(req.body);
-    console.log(req.body);
-    console.log(result.error);
-    try {
-      if(result.success) {
-        if(result.data.email ) {
-          const user = await User.findOne({ email: result.data.email });
-          if(user && user.password === result.data.password) {
-
-            const token = jwt.sign({userId: user.username}, process.env.JWT_SECRET);
-            res.json({
-              fistname: user.firstname,
-              message: "User signed in successfully",
-              token: token
-            })
-          } else{
-            res.status(401).json({ 	message: "Error while logging in" });
+  const result = verifySignin.safeParse(req.body);
+  try {
+      if (result.success) {
+          let user;
+          if (result.data.email) {
+              user = await User.findOne({ email: result.data.email });
+          } else if (result.data.username) {
+              user = await User.findOne({ username: result.data.username });
           }
-      } else if(result.data.username ) {
-        const user = await User.findOne({ username: result.data.username });
-        if(user && user.password === result.data.password) {
-          const token = jwt.sign({userId: user.username}, process.env.JWT_SECRET);
-          res.json({
-            fistname: user.firstname,
-            message: "User signed in successfully",
-            token: token
-          })
-        } else{
-          res.status(401).json({ 	message: "Error while logging in" });
-        }
+          if (user) {
+              bcrypt.compare(result.data.password, user.password, function(err, resultdata) {
+                  if (resultdata) {
+                      const token = jwt.sign({ userId: user.username }, process.env.JWT_SECRET);
+                      res.json({
+                          firstname: user.firstname,
+                          message: "User signed in successfully",
+                          token: token
+                      });
+                  } else {
+                      res.status(401).json({ message: "Error while logging in" });
+                  }
+              });
+          } else {
+              res.status(401).json({ message: "Error while logging in" });
+          }
+      } else {
+          res.status(401).json({ message: "Error while logging in" });
       }
-      else{
-        res.status(401).json({ 	message: "Error while logging in" });
-      }
-    } else{
-      res.status(401).json({ 	message: "Error while logging in" });
-    }
-    } catch (error) {
+  } catch (error) {
       res.json({ error: "Invalid credentials" });
-    }
-})
+  }
+});
+
 
 router.put("/",authMiddleware, async (req, res)=>{
   const result = verifyUpdateUser.safeParse(req.body);
