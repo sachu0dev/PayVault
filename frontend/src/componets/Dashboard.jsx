@@ -1,37 +1,39 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../utils/auth";
+import { UserContext } from "../utils/context";
 
 const Dashboard = () => {
   const [search, setSearch] = useState("");
-  const { token } = useAuth();
+  const { userToken } = useContext(UserContext);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!token) {
+    if (!userToken) {
       navigate("/signin");
     }
-  }, [token, navigate]);
-
-  if (!token) {
-    return null; // Prevent rendering dashboard content if not authenticated
-  }
+  }, []);
 
   return (
     <>
       <div className=" h-[8vh] flex justify-between items-center p-4 border-b-2">
         <h1 className="text-4xl font-bold">PayVault</h1>
         <div className="flex gap-4 items-center">
-          <h2 className="text-2xl">Hello, {"user"}</h2>
+          <h2 className="text-2xl">
+            Hello, {userToken ? localStorage.getItem("firstname") : "User"}
+          </h2>
           <div className="w-[60px] h-[60px] bg-slate-400 block rounded-full relative">
             <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-4xl text-white">
-              {"U"}
+              {userToken
+                ? localStorage.getItem("firstname")[0].toUpperCase()
+                : "U"}
             </span>
           </div>
         </div>
       </div>
       <div className="m-2 p-4 ">
-        <h2 className="text-3xl font-bold mb-6">Your Balance {"₹"}</h2>
+        {/* <h2 className="text-3xl font-bold mb-6">
+          Your Balance {"₹"} {balance}
+        </h2> */}
         <h2 className="text-2xl font-bold mb-6 ">Users</h2>
         <form
           onSubmit={(e) => {

@@ -1,11 +1,9 @@
 import axios from "axios";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../utils/auth";
+import { UserContext } from "../utils/context";
 
 const Signup = () => {
-  const { updateToken } = useAuth();
-
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
@@ -14,6 +12,15 @@ const Signup = () => {
     firstname: "",
     lastname: "",
   });
+
+  const { userToken, setUserToken } = useContext(UserContext);
+
+  useEffect(() => {
+    setUserToken(localStorage.getItem("token"));
+    if (userToken) {
+      navigate("/dashboard");
+    }
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -31,8 +38,6 @@ const Signup = () => {
       const json = await res.data;
       localStorage.setItem("token", json.token);
       localStorage.setItem("firstname", json.firstname);
-      const receivedToken = json.token;
-      updateToken(receivedToken);
       navigate("/dashboard");
     } catch (error) {
       console.log(error);
@@ -81,7 +86,7 @@ const Signup = () => {
               placeholder="********"
               className="w-full border-2  p-2 rounded-md"
             />
-          </label>
+          </label>{" "}
           <br />
           <label className="flex flex-col w-full">
             First Name:

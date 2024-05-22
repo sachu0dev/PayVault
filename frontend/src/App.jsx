@@ -1,26 +1,19 @@
+import { useState } from "react";
 import { Outlet, createBrowserRouter } from "react-router-dom";
 import Dashboard from "./componets/Dashboard";
 import Demo from "./componets/Demo";
 import Signin from "./componets/Signin";
 import Signup from "./componets/Signup";
 import Transfer from "./componets/Transfer";
-import { AuthProvider } from "./utils/auth";
+import { UserContext } from "./utils/context";
 
 function App() {
-  // const { updateToken } = useAuth();
-
-  // Function to update token and store it in local storage
-  // useEffect(() => {
-  //   const token = localStorage.getItem("token");
-  //   if (token) {
-  //     updateToken(token);
-  //   }
-  // });
+  const [userToken, setUserToken] = useState(localStorage.getItem("token"));
   return (
     <>
-      <AuthProvider>
+      <UserContext.Provider value={{ userToken, setUserToken }}>
         <Outlet />
-      </AuthProvider>
+      </UserContext.Provider>
     </>
   );
 }

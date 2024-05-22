@@ -1,11 +1,10 @@
 import axios from "axios";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../utils/auth";
+import { UserContext } from "../utils/context";
 
 const Signin = () => {
   const navigate = useNavigate();
-  const { updateToken } = useAuth();
   const [formData, setFormData] = useState({
     email: "",
     username: "",
@@ -13,10 +12,19 @@ const Signin = () => {
   });
   const [isEmailMod, setIsEmailMod] = useState(false);
 
+  const { userToken, setUserToken } = useContext(UserContext);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
+
+  useEffect(() => {
+    setUserToken(localStorage.getItem("token"));
+    if (userToken) {
+      navigate("/dashboard");
+    }
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -40,11 +48,9 @@ const Signin = () => {
     const json = await res.data;
     localStorage.setItem("token", json.token);
     localStorage.setItem("firstname", json.firstname);
-
-    const receivedToken = json.token;
-    updateToken(receivedToken);
     navigate("/dashboard");
   };
+
   return (
     <div className="h-screen w-screen flex items-center justify-center bg-black/60">
       <div className="flex flex-col bg-white p-8 items-center rounded-lg">
