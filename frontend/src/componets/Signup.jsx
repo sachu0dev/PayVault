@@ -1,7 +1,6 @@
 import axios from "axios";
-import { useContext, useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { UserContext } from "../utils/context";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -13,14 +12,14 @@ const Signup = () => {
     lastname: "",
   });
 
-  const { userToken, setUserToken } = useContext(UserContext);
+  // const { userToken, setUserToken } = useContext(UserContext);
 
-  useEffect(() => {
-    setUserToken(localStorage.getItem("token"));
-    if (userToken) {
-      navigate("/dashboard");
-    }
-  }, []);
+  // useEffect(() => {
+  //   setUserToken(localStorage.getItem("token"));
+  //   if (userToken) {
+  //     navigate("/dashboard");
+  //   }
+  // }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -31,6 +30,8 @@ const Signup = () => {
     e.preventDefault();
     console.log("Form submitted:", formData);
     try {
+      formData.firstname = formData.firstname.toLowerCase();
+      formData.lastname = formData.lastname.toLowerCase();
       const res = await axios.post(
         "http://localhost:3000/api/v1/user/signup",
         formData

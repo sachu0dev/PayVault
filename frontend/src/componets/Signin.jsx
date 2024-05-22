@@ -1,7 +1,6 @@
 import axios from "axios";
-import { useContext, useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { UserContext } from "../utils/context";
 
 const Signin = () => {
   const navigate = useNavigate();
@@ -12,19 +11,19 @@ const Signin = () => {
   });
   const [isEmailMod, setIsEmailMod] = useState(false);
 
-  const { userToken, setUserToken } = useContext(UserContext);
+  // const { userToken, setUserToken } = useContext(UserContext);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  useEffect(() => {
-    setUserToken(localStorage.getItem("token"));
-    if (userToken) {
-      navigate("/dashboard");
-    }
-  }, []);
+  // useEffect(() => {
+  //   setUserToken(localStorage.getItem("token"));
+  //   if (userToken) {
+  //     navigate("/dashboard");
+  //   }
+  // }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

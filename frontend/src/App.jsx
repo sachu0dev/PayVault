@@ -5,14 +5,18 @@ import Demo from "./componets/Demo";
 import Signin from "./componets/Signin";
 import Signup from "./componets/Signup";
 import Transfer from "./componets/Transfer";
-import { UserContext } from "./utils/context";
+import { ToContext, UserContext } from "./utils/context";
 
 function App() {
   const [userToken, setUserToken] = useState(localStorage.getItem("token"));
+  const [to, setTo] = useState();
+
   return (
     <>
       <UserContext.Provider value={{ userToken, setUserToken }}>
-        <Outlet />
+        <ToContext.Provider value={{ to, setTo }}>
+          <Outlet />
+        </ToContext.Provider>
       </UserContext.Provider>
     </>
   );

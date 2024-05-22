@@ -8,7 +8,7 @@ const mongoose = require('mongoose');
 
 const verifyTransfer = z.object({
   to: z.string(),
-  amount: z.number(),
+  amount: z.string(),
 });
 
 

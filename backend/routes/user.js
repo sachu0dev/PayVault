@@ -47,7 +47,7 @@ router.post("/signup", async (req, res) => {
         await newAccount.save();
         const token = jwt.sign({userId: newUser._id}, process.env.JWT_SECRET);
         res.json({
-          fistname: newUser.firstname,
+          firstname: newUser.firstname,
           message: "User created successfully",
           token: token
         })
@@ -118,7 +118,7 @@ router.put("/",authMiddleware, async (req, res)=>{
   }
 })
 
-router.get("/bulk", async (req, res) => {
+router.get("/users",authMiddleware, async (req, res) => {
   const filter = req.query.filter || "";
   const users = await User.find({
     $or: [{
@@ -131,15 +131,17 @@ router.get("/bulk", async (req, res) => {
         }
     }]
 })
-
 res.json({
   users: users.map(user =>{
-    return {
-      username: user.username,
-      firstname: user.firstname,
-      lastname: user.lastname,
-      _id: user._id
+    if(user._id.toString() !== req.user.userId){
+      return {
+        username: user.username,
+        firstname: user.firstname,
+        lastname: user.lastname,
+        _id: user._id
+      }
     }
+    
   })
 });
   
