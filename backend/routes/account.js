@@ -14,6 +14,7 @@ const verifyTransfer = z.object({
 
 router.get("/balance",authMiddleware, async (req, res) => {
   const userId = req.user.userId
+  
   const account = await Account.findOne({userId: userId});
   res.json({balance: account.balance})
 }
