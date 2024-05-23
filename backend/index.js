@@ -9,6 +9,10 @@ app.use(cors({
   origin: "https://pay-vault-frontend.vercel.app/"
 }));
 
+
+
+app.options('*', cors());
+
 const rootRouter = require('./routes/index');
 
 app.use("/api/v1", rootRouter);

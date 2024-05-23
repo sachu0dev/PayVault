@@ -1,6 +1,6 @@
-import axios from "axios"; // Added axios import
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { axiosInstance } from "../App";
 import { ToContext, UserContext } from "../utils/context";
 
 const Transfer = () => {
@@ -18,7 +18,7 @@ const Transfer = () => {
 
   const sendMoney = async () => {
     try {
-      const res = await axios.post(
+      const res = await axiosInstance.post(
         "https://pay-vault.vercel.app/api/v1/account/transfer",
         { amount: amount, to: to._id }, // Moved data outside headers
         {

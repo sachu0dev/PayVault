@@ -1,6 +1,6 @@
-import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { axiosInstance } from "../App";
 import { ToContext, UserContext } from "../utils/context";
 
 const Dashboard = () => {
@@ -19,7 +19,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     const fetchBalance = async () => {
-      const res = await axios.get(
+      const res = await axiosInstance.get(
         "https://pay-vault.vercel.app/api/v1/account/balance",
         {
           headers: {
@@ -34,7 +34,7 @@ const Dashboard = () => {
     fetchBalance();
   }, [userToken]);
   const getUsers = async () => {
-    const res = await axios.get(
+    const res = await axiosInstance.get(
       "https://pay-vault.vercel.app/api/v1/user/users?filter=" +
         search.toLowerCase(),
       {

@@ -7,6 +7,16 @@ import Signup from "./componets/Signup";
 import Transfer from "./componets/Transfer";
 import { ToContext, UserContext } from "./utils/context";
 
+import axios from "axios";
+
+export const axiosInstance = axios.create({
+  baseURL: "https://pay-vault.vercel.app/",
+  timeout: 10000,
+  headers: {
+    "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": "https://pay-vault-frontend.vercel.app/",
+  },
+});
 function App() {
   const [userToken, setUserToken] = useState(localStorage.getItem("token"));
   const [to, setTo] = useState();

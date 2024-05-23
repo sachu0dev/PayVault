@@ -1,6 +1,6 @@
-import axios from "axios";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { axiosInstance } from "../App";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -32,7 +32,7 @@ const Signup = () => {
     try {
       formData.firstname = formData.firstname.toLowerCase();
       formData.lastname = formData.lastname.toLowerCase();
-      const res = await axios.post(
+      const res = await axiosInstance.post(
         "https://pay-vault.vercel.app/api/v1/user/signup",
         formData
       );
