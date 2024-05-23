@@ -5,7 +5,9 @@ const cors = require('cors');
 require('dotenv').config()
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: "https://pay-vault-frontend.vercel.app/"
+}));
 
 const rootRouter = require('./routes/index');
 

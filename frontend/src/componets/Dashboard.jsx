@@ -9,7 +9,7 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const [balance, setBalance] = useState("....");
   const [users, setUsers] = useState([]);
-  const { to, setTo } = useContext(ToContext);
+  const { setTo } = useContext(ToContext);
 
   useEffect(() => {
     if (!userToken) {
