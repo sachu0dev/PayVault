@@ -20,7 +20,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchBalance = async () => {
       const res = await axios.get(
-        "http://localhost:3000/api/v1/account/balance",
+        "https://pay-vault.vercel.app/api/v1/account/balance",
         {
           headers: {
             Authorization: `Bearer ${userToken}`,
@@ -35,7 +35,8 @@ const Dashboard = () => {
   }, [userToken]);
   const getUsers = async () => {
     const res = await axios.get(
-      "http://localhost:3000/api/v1/user/users?filter=" + search.toLowerCase(),
+      "https://pay-vault.vercel.app/api/v1/user/users?filter=" +
+        search.toLowerCase(),
       {
         headers: {
           Authorization: `Bearer ${userToken}`,

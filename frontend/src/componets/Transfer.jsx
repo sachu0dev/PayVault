@@ -19,7 +19,7 @@ const Transfer = () => {
   const sendMoney = async () => {
     try {
       const res = await axios.post(
-        "http://localhost:3000/api/v1/account/transfer",
+        "https://pay-vault.vercel.app/api/v1/account/transfer",
         { amount: amount, to: to._id }, // Moved data outside headers
         {
           headers: {

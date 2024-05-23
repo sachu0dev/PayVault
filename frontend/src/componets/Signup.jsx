@@ -33,7 +33,7 @@ const Signup = () => {
       formData.firstname = formData.firstname.toLowerCase();
       formData.lastname = formData.lastname.toLowerCase();
       const res = await axios.post(
-        "http://localhost:3000/api/v1/user/signup",
+        "https://pay-vault.vercel.app/api/v1/user/signup",
         formData
       );
       const json = await res.data;
