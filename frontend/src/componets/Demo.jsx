@@ -1,9 +1,11 @@
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
 const Demo = () => {
-  return (
-    <div>
-      <h3>hello everyone</h3>
-    </div>
-  );
+  const navigate = useNavigate();
+  useEffect(() => {
+    navigate("/dashboard");
+  });
 };
 
 export default Demo;
